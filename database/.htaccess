@@ -1,0 +1,2 @@
+# Impide abrir estos archivos desde el navegador (Apache 2.4)
+Require all denied

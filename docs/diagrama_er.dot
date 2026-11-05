@@ -1,0 +1,77 @@
+digraph ER {
+  graph [rankdir=LR, bgcolor="white", fontname="Helvetica", nodesep=0.5, ranksep=1.1, pad=0.3];
+  node  [shape=plain, fontname="Helvetica", fontsize=11];
+  edge  [fontname="Helvetica", fontsize=10, color="#1b3a6b", fontcolor="#1b3a6b", dir=both, arrowtail=tee, arrowhead=crow];
+
+  roles [label=<
+    <table border="0" cellborder="1" cellspacing="0" cellpadding="5" color="#9aa7bd">
+      <tr><td bgcolor="#1b3a6b" colspan="2"><font color="white"><b>roles</b></font></td></tr>
+      <tr><td align="left"><b>PK</b></td><td align="left">id_rol</td></tr>
+      <tr><td></td><td align="left">nombre (único)</td></tr>
+      <tr><td></td><td align="left">descripcion</td></tr>
+    </table>>];
+
+  usuarios [label=<
+    <table border="0" cellborder="1" cellspacing="0" cellpadding="5" color="#9aa7bd">
+      <tr><td bgcolor="#1b3a6b" colspan="2"><font color="white"><b>usuarios</b></font></td></tr>
+      <tr><td align="left"><b>PK</b></td><td align="left">id_usuario</td></tr>
+      <tr><td align="left"><b>FK</b></td><td align="left">id_rol</td></tr>
+      <tr><td></td><td align="left">nombre, apellidos</td></tr>
+      <tr><td></td><td align="left">cedula (único)</td></tr>
+      <tr><td></td><td align="left">correo (único)</td></tr>
+      <tr><td></td><td align="left">telefono</td></tr>
+      <tr><td></td><td align="left">password_hash</td></tr>
+      <tr><td></td><td align="left">estado, fecha_registro</td></tr>
+    </table>>];
+
+  categorias [label=<
+    <table border="0" cellborder="1" cellspacing="0" cellpadding="5" color="#9aa7bd">
+      <tr><td bgcolor="#1b3a6b" colspan="2"><font color="white"><b>categorias</b></font></td></tr>
+      <tr><td align="left"><b>PK</b></td><td align="left">id_categoria</td></tr>
+      <tr><td></td><td align="left">nombre (único)</td></tr>
+      <tr><td></td><td align="left">descripcion</td></tr>
+    </table>>];
+
+  equipos [label=<
+    <table border="0" cellborder="1" cellspacing="0" cellpadding="5" color="#9aa7bd">
+      <tr><td bgcolor="#1b3a6b" colspan="2"><font color="white"><b>equipos</b></font></td></tr>
+      <tr><td align="left"><b>PK</b></td><td align="left">id_equipo</td></tr>
+      <tr><td align="left"><b>FK</b></td><td align="left">id_categoria</td></tr>
+      <tr><td></td><td align="left">codigo (único)</td></tr>
+      <tr><td></td><td align="left">nombre, marca, modelo</td></tr>
+      <tr><td></td><td align="left">descripcion</td></tr>
+      <tr><td></td><td align="left">estado, fecha_registro</td></tr>
+    </table>>];
+
+  prestamos [label=<
+    <table border="0" cellborder="1" cellspacing="0" cellpadding="5" color="#9aa7bd">
+      <tr><td bgcolor="#c8a23a" colspan="2"><b>prestamos</b></td></tr>
+      <tr><td align="left"><b>PK</b></td><td align="left">id_prestamo</td></tr>
+      <tr><td align="left"><b>FK</b></td><td align="left">id_usuario (recibe)</td></tr>
+      <tr><td align="left"><b>FK</b></td><td align="left">id_equipo</td></tr>
+      <tr><td align="left"><b>FK</b></td><td align="left">id_encargado (registra)</td></tr>
+      <tr><td></td><td align="left">fecha_salida</td></tr>
+      <tr><td></td><td align="left">fecha_limite</td></tr>
+      <tr><td></td><td align="left">fecha_devolucion</td></tr>
+      <tr><td></td><td align="left">estado, observaciones</td></tr>
+    </table>>];
+
+  multas [label=<
+    <table border="0" cellborder="1" cellspacing="0" cellpadding="5" color="#9aa7bd">
+      <tr><td bgcolor="#1b3a6b" colspan="2"><font color="white"><b>multas</b></font></td></tr>
+      <tr><td align="left"><b>PK</b></td><td align="left">id_multa</td></tr>
+      <tr><td align="left"><b>FK</b></td><td align="left">id_prestamo (único)</td></tr>
+      <tr><td align="left"><b>FK</b></td><td align="left">id_usuario</td></tr>
+      <tr><td></td><td align="left">dias_retraso, monto</td></tr>
+      <tr><td></td><td align="left">estado</td></tr>
+      <tr><td></td><td align="left">fecha_generada, fecha_pago</td></tr>
+    </table>>];
+
+  roles      -> usuarios  [label="tiene"];
+  categorias -> equipos   [label="clasifica"];
+  usuarios   -> prestamos [label="recibe"];
+  equipos    -> prestamos [label="se presta en"];
+  usuarios   -> prestamos [label="registra", style=dashed];
+  prestamos  -> multas    [label="genera", arrowhead=teeodot];
+  usuarios   -> multas    [label="debe"];
+}
