@@ -5,8 +5,14 @@ Proyecto final integrador · Programación V · Universidad Autónoma de Centro 
 
 Aplicación web cliente-servidor para registrar equipos, prestarlos, recibir devoluciones y controlar multas por retraso en una institución educativa.
 
-**Repositorio:** _pegue aquí el enlace de GitHub_
-**Integrantes:** _escriba aquí los nombres del grupo_
+**Repositorio:** https://github.com/dherk62-gif/prestamos-equipos
+**Integrantes:** Dylan Cordero Hernandez · Daniel Castillo Valerio
+
+## Estado de este avance (Entregable 2)
+
+Versión funcional parcial del sistema. **Incluida en el repositorio:** inicio de sesión con roles, panel principal, CRUD de usuarios, categorías y equipos, base de datos con su diagrama entidad-relación y esta documentación.
+
+**Se incorpora en el siguiente avance:** los módulos de préstamos, multas y reportes. Mientras no estén en el repositorio, los botones del panel y los enlaces del menú que apuntan a esos módulos no tienen destino.
 
 ## Tecnologías
 
@@ -54,9 +60,9 @@ prestamos-equipos/
 │   ├── usuarios/             index · form (crear/editar) · eliminar
 │   ├── categorias/           index · form (crear/editar) · eliminar
 │   ├── equipos/              index · form (crear/editar) · eliminar
-│   ├── prestamos/            index · nuevo · devolver
-│   ├── multas/               index · pagar
-│   └── reportes/             index (vencidos, más prestados, por usuario)
+│   ├── prestamos/            index · nuevo · devolver        (próximo avance)
+│   ├── multas/               index · pagar                   (próximo avance)
+│   └── reportes/             index (vencidos, más prestados) (próximo avance)
 ├── assets/
 │   ├── css/style.css
 │   └── js/app.js
@@ -96,6 +102,8 @@ Vistas: `v_prestamos_detalle` (préstamos con usuario, equipo y estado real: en 
 
 ## Roles y permisos
 
+La tabla incluye los permisos de los módulos que se incorporan en el próximo avance.
+
 | Acción | Administrador | Encargado | Usuario |
 |---|:-:|:-:|:-:|
 | Iniciar y cerrar sesión | Sí | Sí | Sí |
@@ -111,6 +119,8 @@ Vistas: `v_prestamos_detalle` (préstamos con usuario, equipo y estado real: en 
 
 ## Reglas de negocio y dónde se aplican
 
+Las reglas de préstamos y multas se activan cuando se incorporen esos módulos (próximo avance). Las de usuarios y equipos ya están en este repositorio.
+
 | Regla | Dónde está |
 |---|---|
 | Un equipo prestado no puede prestarse de nuevo hasta que sea devuelto | `modules/prestamos/nuevo.php`: transacción con `SELECT … FOR UPDATE` sobre el equipo; la lista solo muestra equipos disponibles |
@@ -122,35 +132,43 @@ Vistas: `v_prestamos_detalle` (préstamos con usuario, equipo y estado real: en 
 
 ## Descripción de los módulos desarrollados
 
+**Incluidos en este avance**
+
 - **Inicio de sesión:** valida correo y contraseña con `password_verify`, regenera el id de sesión y bloquea usuarios inactivos.
-- **Panel:** el personal ve equipos por estado, préstamos vencidos, multas pendientes y los préstamos que requieren atención hoy. El usuario común ve sus préstamos en curso y sus multas.
-- **Usuarios:** registro, búsqueda por nombre, cédula o correo, filtro por rol, edición y eliminación. Nadie puede quitarse su propio acceso de administración.
+- **Panel:** el personal ve equipos por estado, préstamos vencidos y en curso, y multas pendientes. El usuario común ve sus préstamos en curso y sus multas.
+- **Usuarios:** registro, búsqueda por nombre, cédula o correo, filtro por rol, edición y eliminación. La cédula se valida con 9 dígitos sin guiones, el correo debe ser único y nadie puede quitarse su propio acceso de administración.
 - **Categorías:** registro, búsqueda, edición y eliminación (se bloquea si tiene equipos).
 - **Equipos:** registro, búsqueda por código, nombre, marca o modelo, filtros por categoría y estado, edición y eliminación. Un equipo prestado no permite cambiar su estado a mano.
-- **Préstamos:** registro con fecha límite, listado con pestañas (todos, en curso, vencidos, devueltos), búsqueda y registro de devoluciones.
-- **Multas:** listado de pendientes y pagadas, total pendiente y botón para marcar como pagada.
-- **Reportes:** préstamos vencidos con datos de contacto, ranking de equipos más prestados e historial por usuario. Todos se pueden imprimir.
+
+**Por incorporar en el siguiente avance**
+
+- **Préstamos:** registro con fecha límite, listado con pestañas, búsqueda y registro de devoluciones.
+- **Multas:** listado de pendientes y pagadas, y pago de multas.
+- **Reportes:** préstamos vencidos, equipos más prestados e historial por usuario.
 
 ## Funcionalidades terminadas y pendientes
 
-**Terminadas**
+**Terminadas e incluidas en este repositorio**
 
 - Inicio y cierre de sesión con roles y permisos
+- Panel principal
 - CRUD completo de usuarios, categorías y equipos
-- Registro de préstamos y de devoluciones
-- Multa automática por retraso y pago de multas
-- Búsquedas y filtros en todos los listados
-- Reportes: vencidos, más prestados e historial por usuario
+- Búsquedas y filtros en los listados de usuarios y equipos
 - Validaciones del lado del servidor, consultas preparadas y protección CSRF
+- Base de datos con tablas, llaves foráneas, vistas y diagrama entidad-relación
 
-**Pendientes para la entrega final**
+**Pendientes de incorporar al repositorio (siguiente avance)**
+
+- Módulo de préstamos con devoluciones
+- Multas automáticas y pago de multas
+- Reportes de vencidos, más prestados e historial por usuario
+
+**Mejoras previstas para la entrega final**
 
 - Cambiar la contraseña desde el perfil y recuperarla por correo
 - Paginación de los listados
-- Exportar reportes a PDF o Excel (hoy solo se imprimen)
+- Exportar reportes a PDF o Excel
 - Avisos por correo cuando un préstamo está por vencer
-- Ajustar el monto de la multa desde una pantalla (hoy está en `config/app.php`)
-- Bitácora de acciones del personal
 - Pruebas finales de usabilidad y manual de usuario
 
 ## Flujo de trabajo con Git
@@ -166,4 +184,23 @@ Sugerencia: una rama por módulo (`feature/usuarios`, `feature/prestamos`…), c
 
 ## Evidencias de pantallas
 
-Para la entrega, tome capturas de: inicio de sesión, panel, listado y formulario de equipos, nuevo préstamo (con un usuario que tiene multas), devolución con multa generada, multas, y cada reporte. Guárdelas en una carpeta `docs/capturas/`.
+Capturas de las pantallas incluidas en este avance (carpeta `docs/capturas/`).
+
+| Pantalla | Captura |
+|---|---|
+| Inicio de sesión | ![Inicio de sesión](docs/capturas/01-login.png) |
+| Panel principal (administrador) | ![Panel](docs/capturas/02-panel.png) |
+| Categorías | ![Categorías](docs/capturas/03-categorias.png) |
+| Equipos con filtros | ![Equipos](docs/capturas/04-equipos.png) |
+| Listado de usuarios | ![Usuarios](docs/capturas/05-usuarios.png) |
+| Formulario de usuario con validaciones | ![Formulario de usuario](docs/capturas/06-usuario-formulario.png) |
+| Panel de un usuario común | ![Panel de usuario](docs/capturas/07-panel-usuario.png) |
+
+## Aportes por integrante
+
+Los aportes se pueden verificar en el historial de commits del repositorio (`git log` o la pestaña *Commits* en GitHub).
+
+| Integrante | Aportes |
+|---|---|
+| Dylan Cordero Hernandez | Estructura base, conexión a MySQL, login y control de roles; módulo de usuarios con validaciones; script SQL, vistas y diagrama entidad-relación; panel principal y documentación |
+| Daniel Castillo Valerio | Módulos de categorías y equipos con búsqueda y filtros |
